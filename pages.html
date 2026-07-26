@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IT-инфраструктура — XDataSystems</title>
+  <meta name="description" content="Проектирование, развёртывание и обслуживание IT-инфраструктуры от XDataSystems.">
+  <link rel="icon" href="img/logo.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div class="scroll-progress"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav-logo"><img src="img/logo-light.png" alt="XDataSystems"></a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <ul class="nav-links">
+        <li><a href="index.html#about">О компании</a></li>
+        <li><a href="index.html#pillars">Направления</a></li>
+        <li><a href="pages.html" aria-current="page">Услуги</a></li>
+        <li><a href="index.html#contact">Контакты</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="index.html#contact" class="btn btn-primary btn-small">Обсудить проект</a>
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <canvas id="chevron-canvas-small" aria-hidden="true"></canvas>
+      <div class="container">
+        <div class="page-banner-inner">
+          <nav class="breadcrumb" aria-label="Хлебные крошки">
+            <a href="index.html">Главная</a><span class="sep">/</span>
+            <a href="pages.html">Услуги</a><span class="sep">/</span>
+            <span aria-current="page">IT-инфраструктура</span>
+          </nav>
+          <p class="kicker">IT</p>
+          <h1 data-reveal="clip">IT-инфраструктура</h1>
+          <p class="lead" data-reveal="up" data-reveal-delay="1">Проектируем, разворачиваем и обслуживаем инфраструктуру, на которой держится бизнес — от серверной до рабочего места.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-layout">
+      <div class="container">
+        <div class="content-main">
+          <div class="prose" data-reveal="up">
+            <p>Инфраструктура редко становится темой для разговора, пока не откажет. Мы строим её так, чтобы этот разговор не случился: с резервированием на каждом уровне и инженерной командой, которая отвечает на инцидент, а не читает про него в тикете на следующее утро.</p>
+
+            <h2>Что входит в контур</h2>
+            <ul>
+              <li>Проектирование и развёртывание серверной и сетевой инфраструктуры</li>
+              <li>Облачные решения и миграция без остановки сервисов</li>
+              <li>Автоматизация бизнес-процессов и внутренних регламентов</li>
+              <li>Круглосуточный мониторинг и инженерная поддержка</li>
+            </ul>
+
+            <h2>Отказоустойчивость на уровне договора</h2>
+            <p>99,9% доступности — не маркетинговая цифра, а параметр в SLA. Мы фиксируем его в договоре и отвечаем за каждый час простоя, а не только объясняем его постфактум.</p>
+
+            <h2>Как начинается работа</h2>
+            <p>Аудит текущей инфраструктуры → карта рисков и узких мест → поэтапный план внедрения без остановки текущих процессов. Первую версию плана вы получаете в течение недели после аудита.</p>
+          </div>
+        </div>
+
+        <aside class="content-aside">
+          <div class="side-card" data-reveal="up">
+            <h3>Другие направления</h3>
+            <nav class="related-list">
+              <a href="index.html#pillars">ИБ <span class="btn-arrow" aria-hidden="true"></span></a>
+              <a href="index.html#pillars">PR / GR <span class="btn-arrow" aria-hidden="true"></span></a>
+              <a href="index.html#about">О компании <span class="btn-arrow" aria-hidden="true"></span></a>
+            </nav>
+          </div>
+          <div class="side-card" data-reveal="up" data-reveal-delay="1">
+            <h3>Связаться</h3>
+            <p style="font-size:.92rem;">Опишите задачу — вернёмся с оценкой в течение рабочего дня.</p>
+            <a href="mailto:info@xdatasystems.ru" class="btn btn-primary btn-small">Написать нам</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="img/logo-light.png" alt="XDataSystems"><span>© 2026</span></div>
+      <nav class="footer-links">
+        <a href="index.html#about">О компании</a>
+        <a href="index.html#pillars">Направления</a>
+        <a href="pages.html">Услуги</a>
+        <a href="index.html#contact">Контакты</a>
+      </nav>
+      <div class="footer-legal">ООО «ИКСДАТАСИСТЕМС» · ИНН 7734344329</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    window.XDS.initChevronField(document.getElementById('chevron-canvas-small'), { density: 24, blueRatio: 0.08 });
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XDataSystems — Три контура. Один периметр.</title>
+  <meta name="description" content="XDataSystems — инфраструктура, информационная безопасность и коммуникации под одним подрядчиком.">
+  <link rel="icon" href="img/logo.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <canvas id="bg-scene" aria-hidden="true"></canvas>
+  <div class="scroll-progress"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav-logo"><img src="img/logo-light.png" alt="XDataSystems"></a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <ul class="nav-links">
+        <li><a href="index.html#about">О компании</a></li>
+        <li><a href="index.html#pillars">Направления</a></li>
+        <li><a href="pages.html">Услуги</a></li>
+        <li><a href="index.html#contact">Контакты</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="index.html#contact" class="btn btn-primary btn-small">Обсудить проект</a>
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <p class="kicker reveal-line">Для крупного бизнеса и госзаказчиков</p>
+          <h1 class="hero-title">
+            <span class="line-mask"><span class="line-inner">Три контура.</span></span>
+            <span class="line-mask"><span class="line-inner">Один периметр</span></span>
+            <span class="line-mask"><span class="line-inner">ответственности.</span></span>
+          </h1>
+          <p class="hero-sub reveal-line">Инфраструктура, информационная безопасность и коммуникации — под одним подрядчиком, без разрывов на стыках.</p>
+          <div class="hero-cta reveal-line">
+            <a href="#contact" class="btn btn-primary">Обсудить проект</a>
+            <a href="#about" class="btn btn-ghost">Смотреть направления <span class="btn-arrow" aria-hidden="true"></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <!-- held by its own pin so the parallax + heading wipe have time to
+           read, instead of flashing past at native scroll speed -->
+      <div id="about-pin-wrap" class="pin-wrap pin-wrap-medium">
+        <div class="pin-stage">
+          <div class="container">
+            <div class="about-head" data-reveal="clip">
+              <p class="kicker">О компании</p>
+              <h2>Когда системы, защита и репутация — один периметр</h2>
+            </div>
+            <div class="about-body" data-reveal="clip">
+              <p>Крупная организация редко теряет данные и репутацию по отдельности: инцидент в инфраструктуре становится темой для прессы быстрее, чем успевает отреагировать служба безопасности. XDataSystems строит инфраструктуру, защищает её и говорит от имени заказчика в публичном поле — как один подрядчик с единым контуром ответственности, а не три подрядчика, которые обмениваются письмами постфактум.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pillars" class="pillars">
+      <div class="container">
+        <div class="pillars-head" data-reveal="clip">
+          <p class="kicker">Направления</p>
+          <h2>Одна команда, три уровня контроля</h2>
+        </div>
+
+        <article class="pillar-card card-a" data-reveal="up">
+          <span class="pillar-tag">IT</span>
+          <h3>Инфраструктура, которая не звонит вам ночью</h3>
+          <p>Проектирование и обслуживание серверной и сетевой инфраструктуры, облачные решения, автоматизация бизнес-процессов. Круглосуточная инженерная поддержка и отказоустойчивость 99,9% — на уровне договора, а не презентации.</p>
+        </article>
+
+        <article class="pillar-card card-b" data-reveal="up" data-reveal-delay="1">
+          <span class="pillar-tag">ИБ</span>
+          <h3>Периметр, проверенный на разрыв</h3>
+          <p>Аудит защищённости, реагирование на инциденты, внедрение SIEM и DLP, защита рабочих мест и сетевого контура. Ищем точки входа для атаки раньше, чем это сделает кто-то другой.</p>
+        </article>
+
+        <article class="pillar-card card-c" data-reveal="up" data-reveal-delay="2">
+          <span class="pillar-tag">PR / GR</span>
+          <h3>Голос компании в момент, когда он важнее всего</h3>
+          <p>PR, GR и организация мероприятий для площадок, где решения принимаются лично — для тех же аудиторий, для которых мы строим инфраструктуру и защиту: регуляторов, партнёров, прессы.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="stats" class="stats" aria-label="Показатели">
+      <h2 class="sr-only">Показатели</h2>
+      <div class="container stats-grid">
+        <div class="stat" data-reveal="up">
+          <span class="stat-num" data-count data-value="99.9">0</span>
+          <span class="stat-label">отказоустойчивость инфраструктуры</span>
+        </div>
+        <div class="stat" data-reveal="up" data-reveal-delay="1">
+          <span class="stat-num">24/7</span>
+          <span class="stat-label">инженерная поддержка и реагирование на инциденты</span>
+        </div>
+        <div class="stat" data-reveal="up" data-reveal-delay="2">
+          <span class="stat-num" data-count data-value="3">0</span>
+          <span class="stat-label">направления под одним контуром ответственности</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <!-- pinned "closing perimeter": the two panels hold apart, then
+           converge as you scroll through — a different mechanic again -->
+      <div id="contact-pin-wrap" class="pin-wrap pin-wrap-short">
+        <div class="pin-stage">
+          <div class="container">
+            <div class="contact-lead" data-reveal="left">
+              <p class="kicker">Контакты</p>
+              <h2>Обсудим ваш периметр</h2>
+              <p>Опишите задачу — вернёмся с оценкой и составом команды в течение рабочего дня.</p>
+              <a href="mailto:info@xdatasystems.ru" class="btn btn-primary">Написать на info@xdatasystems.ru</a>
+            </div>
+            <div class="contact-data" data-reveal="right" data-reveal-delay="1">
+              <dl>
+                <div><dt>Телефон</dt><dd><a href="tel:+74953695650">+7 (495) 369-56-50</a></dd></div>
+                <div><dt>Почта</dt><dd><a href="mailto:info@xdatasystems.ru">info@xdatasystems.ru</a></dd></div>
+                <div><dt>Адрес</dt><dd>Москва, ул. Лазо, 14-2-21</dd></div>
+                <div><dt>Портал</dt><dd><a href="https://xdatacloud.ru">xdatacloud.ru</a></dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="img/logo-light.png" alt="XDataSystems"><span>© 2026</span></div>
+      <nav class="footer-links">
+        <a href="index.html#about">О компании</a>
+        <a href="index.html#pillars">Направления</a>
+        <a href="pages.html">Услуги</a>
+        <a href="index.html#contact">Контакты</a>
+      </nav>
+      <div class="footer-legal">ООО «ИКСДАТАСИСТЕМС» · ИНН 7734344329</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+
+  <!-- self-hosted, no CDN: three.js core (bg-scene needs PMREMGenerator +
+       MeshPhysicalMaterial, both in core — no postprocessing chain needed
+       since bg-scene renders directly, no bloom pass) + GSAP/ScrollTrigger
+       for the camera choreography -->
+  <script src="js/vendor/three/three.min.js"></script>
+  <script src="js/vendor/gsap/gsap.min.js"></script>
+  <script src="js/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="js/bg-scene.js"></script>
+</body>
+</html>
