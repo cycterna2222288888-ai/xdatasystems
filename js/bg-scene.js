@@ -270,7 +270,11 @@
           {
             theta: to.theta, radius: to.radius, y: to.y,
             ease: "none",
-            scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.6 }
+            immediateRender: false, // fromTo() renders its "from" state at creation
+                                     // time by default — with 4 tweens sharing one
+                                     // object, whichever is built last would stomp
+                                     // cameraState before any scrolling even happens
+            scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: 0.6 }
           }
         );
       }
