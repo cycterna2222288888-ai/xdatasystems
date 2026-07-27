@@ -1,7 +1,4 @@
-/* =========================================================
-   pages.css — ONLY what is unique to interior content pages.
-   Everything shared lives in base.css.
-   ========================================================= */
+/* pages.css — interior-page-only styles; shared stuff lives in base.css. */
 
 /* ---------- page banner ---------- */
 .page-banner{

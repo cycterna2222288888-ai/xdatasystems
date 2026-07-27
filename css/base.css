@@ -1,9 +1,5 @@
-/* =========================================================
-   base.css — shared foundation for ALL templates.
-   index.css and pages.css add ONLY what is unique to that
-   template. Colors, type, nav, footer, buttons, reveal
-   animation engine and layout grid all live here once.
-   ========================================================= */
+/* base.css — shared foundation for all templates: tokens, reset, type,
+   nav, footer, buttons, reveal engine, layout grid. */
 
 /* ---------- fonts (self-hosted, real files, not CDN) ---------- */
 @font-face{ font-family:'Unbounded'; font-weight:700; font-style:normal; font-display:swap; src:url('../fonts/unbounded-700.woff2') format('woff2'); }
@@ -14,11 +10,7 @@
 @font-face{ font-family:'JetBrains Mono'; font-weight:400; font-style:normal; font-display:swap; src:url('../fonts/jbmono-400.woff2') format('woff2'); }
 @font-face{ font-family:'JetBrains Mono'; font-weight:500; font-style:normal; font-display:swap; src:url('../fonts/jbmono-500.woff2') format('woff2'); }
 
-/* ---------- tokens ----------
-   Dark-glass theme: the page itself is transparent so the fixed
-   #bg-scene 3D layer (see below) shows through everywhere, not just
-   behind the hero. Text/neutrals flip to light-on-dark; --blue stays
-   the exact brand blue sampled from the logo. */
+/* ---------- tokens: dark-glass theme, page transparent so #bg-scene shows through ---------- */
 :root{
   --blue: #05a0f3;
   --blue-deep: #35bbfb; /* lighter tint for hover on dark, deep blue would vanish */
@@ -69,10 +61,7 @@ body{
 ::selection{ background: var(--blue); color:#fff; }
 :focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
 
-/* ---------- persistent 3D background ----------
-   Fixed behind literally everything; the page's own sections stay
-   transparent (or a faint --mist wash) so this reads through as you
-   scroll, instead of being hero-only decoration. */
+/* ---------- persistent 3D background: fixed behind every section, not just the hero ---------- */
 #bg-scene{
   position:fixed; inset:0; width:100vw; height:100vh;
   z-index:-1; background:#0b0f16; /* instant fallback color before WebGL's first frame */
@@ -103,10 +92,7 @@ p{ margin:0; color: var(--gray); }
 }
 .full{ grid-column: 1 / -1; }
 
-/* ---------- buttons (signature clipped corner, no rounded-lg) ----------
-   both variants are glass now, not flat fills — a translucent blue pane
-   for primary, dark glass for ghost, so buttons read as the same material
-   as the cards instead of sitting on top of the scene like flat UI chrome. */
+/* ---------- buttons: glass, not flat fills — same material as the cards (signature clipped corner) ---------- */
 .btn{
   font-family: var(--font-body); font-weight:600; font-size:.94rem;
   padding:.85rem 1.6rem;
@@ -224,9 +210,7 @@ body.loaded .line-inner{ transform: translateY(0); }
   [data-reveal], .line-inner{ transition:none !important; opacity:1 !important; transform:none !important; clip-path:none !important; }
 }
 
-/* ---------- pinned scroll-track: generic "hold the section, animate its
-   content across the hold" mechanism. main.js drives the actual motion;
-   any page can reuse the wrap/stage pair for its own content. ---------- */
+/* ---------- pinned scroll-track: generic hold-and-animate wrap/stage pair, driven by main.js ---------- */
 .pin-wrap{ position:relative; height:190vh; }
 .pin-wrap-medium{ height:145vh; }
 .pin-wrap-short{ height:150vh; }

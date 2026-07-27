@@ -1,18 +1,5 @@
-/* =========================================================
-   main.js — shared behavior for every template:
-   - reveal-on-scroll engine (entrance-only, plays once)
-   - continuous scroll-scrub engine (tied to scroll position the
-     whole time a section is on screen — used to make different
-     sections page differently instead of one repeated fade-up)
-   - pinned-hold helper (about / contact converge)
-   - thin scroll-progress bar
-   - reusable chevron-field canvas (built from the logo's own
-     arrow shape, not a generic particle library)
-   - mobile nav toggle close-on-click
-   One file, reused by index.html and pages.html. Pages that don't
-   have a given element (pillars, stats, contact...) simply skip
-   that part — nothing here is page-specific.
-   ========================================================= */
+/* main.js — shared behavior for index.html + pages.html: reveal-on-scroll,
+   scroll-scrub, pin-hold, progress bar, chevron field, mobile nav. */
 (function () {
   "use strict";
 
@@ -38,11 +25,7 @@
             obs.unobserve(entry.target);
           }
         });
-        // threshold 0 on purpose: an initial clip-path: inset(...,100%,...) state
-        // makes some browsers report intersectionRatio stuck at 0 even once the
-        // element is plainly on-screen, so a higher threshold can simply never
-        // fire and the content stays invisible forever. 0 only needs "has it
-        // started entering" which is unaffected by that.
+        // threshold 0: with a clip-path initial state, higher thresholds can stick at ratio 0
       }, { threshold: 0 });
       targets.forEach(function (el) { obs.observe(el); });
     } else {
@@ -50,18 +33,12 @@
     }
   } catch (e) {}
 
-  /* =========================================================
-     continuous scroll-scrub engine — the thing that makes
-     different sections page differently. Runs every frame
-     (not just on the scroll event) so it stays smooth under
-     trackpad/momentum scrolling.
-     ========================================================= */
-  var bumpFns = []; // legacy velocity bus, still used by the chevron field
+  /* continuous scroll-scrub: runs every rAF frame so it stays smooth under momentum scrolling */
+  var bumpFns = []; // velocity bus, used by the chevron field
 
   function clamp01(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
 
-  // 0 → element's top has just entered the viewport bottom
-  // 1 → element's bottom has just left the viewport top
+  // 0 = element entering viewport bottom, 1 = element left viewport top
   function spanProgress(el) {
     var r = el.getBoundingClientRect();
     var vh = window.innerHeight || 1;
@@ -69,9 +46,7 @@
     return clamp01((vh - r.top) / total);
   }
 
-  // for a tall "pin" wrapper: 0 while its top is still below the viewport
-  // top (pin about to start), 1 once its bottom reaches the viewport
-  // bottom (pin finished) — the standard sticky-progress formula.
+  // sticky-progress formula: 0 at pin start, 1 at pin end
   function pinProgress(wrapEl) {
     var r = wrapEl.getBoundingClientRect();
     var scrollable = r.height - (window.innerHeight || 1);
@@ -111,8 +86,7 @@
     if (bar) bar.style.width = clamp01(scrollY / max) * 100 + "%";
     for (var b = 0; b < bumpFns.length; b++) bumpFns[b](v);
 
-    // everything below is scroll-linked *motion* — skip it under reduced-motion
-    // and let the plain, static CSS layout (see the media query in base.css) take over
+    // skip all scroll-linked motion under reduced-motion (static CSS fallback in base.css)
     if (!reduceMotion) {
       for (var i = 0; i < scrubEls.length; i++) {
         scrubEls[i].style.setProperty("--scrub", spanProgress(scrubEls[i]).toFixed(4));
@@ -123,10 +97,7 @@
         heroEl.style.setProperty("--scrub", heroP.toFixed(4));
       }
 
-      // about: held in place by its own pin-wrap so the parallax + heading
-      // wipe actually have time to read, instead of flashing past at
-      // native scroll speed — --scrub cascades to .about-head/.about-body
-      // through normal CSS inheritance since they're descendants of the wrap
+      // --scrub cascades to .about-head/.about-body via CSS inheritance
       if (aboutWrap) {
         aboutWrap.style.setProperty("--scrub", pinProgress(aboutWrap).toFixed(4));
       }

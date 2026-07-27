@@ -1,19 +1,6 @@
-/* =========================================================
-   bg-scene.js — persistent 3D background: a dark glass node
-   graph, floating and levitating, that the whole page scrolls
-   over (position:fixed canvas, z-index:-1 — see #bg-scene in
-   base.css). The camera flies around it as GSAP ScrollTrigger
-   walks through the page's sections.
-
-   Structure (functional core / imperative shell):
-   - PURE MATH  — takes plain numbers/objects, returns new plain
-     objects, never touches a Mesh, a Vector3 or the DOM.
-   - SCENE BUILD — factory functions that construct Three.js
-     objects (inherently side-effecting; WebGL has no pure API).
-   - APPLY / ANIMATE — the only place that mutates: it reads the
-     pure math output and writes it into pre-allocated Vector3
-     scratch buffers and mesh.position, once per frame.
-   ========================================================= */
+/* bg-scene.js — fixed 3D background (glass node graph), camera flown by
+   GSAP ScrollTrigger. Pure math below, THREE.* object building after,
+   mutation confined to the frame() render loop at the bottom. */
 (function () {
   "use strict";
 
@@ -22,16 +9,12 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* =========================================================
-     PURE MATH — no THREE objects in or out, just numbers.
-     ========================================================= */
-
-  // combine two sine harmonics — this is the whole "levitation" signal
+  // levitation signal: two combined sine harmonics
   function sumSines(t, freq1, freq2, phase) {
     return Math.sin(t * freq1 + phase) * 0.6 + Math.sin(t * freq2 + phase * 1.7) * 0.4;
   }
 
-  // where a node should sit this frame, as a plain {x,y,z} offset from its base position
+  // {x,y,z} offset from a node's base position for this frame
   function levitationOffset(t, seed, amplitude) {
     return {
       x: sumSines(t, 0.18, 0.07, seed) * amplitude * 0.5,
@@ -40,9 +23,7 @@
     };
   }
 
-  // screen-space repulsion: given a node's NDC position and the cursor's NDC
-  // position, how far (in NDC units) and which direction should it flee —
-  // pure vector algebra (subtract, length, normalize, inverse-falloff).
+  // screen-space repulsion vector from cursor NDC to node NDC, inverse-square falloff
   function repulsionInScreenSpace(nodeNdcX, nodeNdcY, cursorNdcX, cursorNdcY, radius, strength) {
     var dx = nodeNdcX - cursorNdcX;
     var dy = nodeNdcY - cursorNdcY;
@@ -53,13 +34,7 @@
     return { x: dx * invDist * falloff * falloff * strength, y: dy * invDist * falloff * falloff * strength };
   }
 
-  // spherical camera rig -> cartesian; the "rotation matrix" the brief asks
-  // for is exactly this: composing camera.position from an orbit angle
-  function orbitToCartesian(theta, radius, y) {
-    return { x: Math.sin(theta) * radius, y: y, z: Math.cos(theta) * radius };
-  }
-
-  // which pairs of nodes count as "connected" (nearest-neighbour graph edges)
+  // nearest-neighbour graph edges
   function buildEdgeList(basePositions, maxDist) {
     var edges = [];
     for (var i = 0; i < basePositions.length; i++) {
@@ -72,7 +47,7 @@
     return edges;
   }
 
-  // deterministic-ish scatter of node base positions inside a flattened ellipsoid
+  // deterministic scatter of node base positions inside a flattened ellipsoid
   function buildNodeLayout(count, seedStart) {
     var nodes = [];
     for (var i = 0; i < count; i++) {
@@ -94,10 +69,6 @@
     return nodes;
   }
 
-  /* =========================================================
-     SCENE BUILD — the only functions allowed to touch THREE.*
-     ========================================================= */
-
   function buildEnvironment(renderer) {
     var pmrem = new THREE.PMREMGenerator(renderer);
     var envScene = new THREE.Scene();
@@ -117,15 +88,13 @@
     return tex;
   }
 
-  // the node shape IS the brand mark: one clean 4-pointed X/star, built as
-  // a single shape (two overlapping chevrons produced an odd 5-lobed blob
-  // instead of a clean X — this is the simpler, correct version).
+  // node shape = the brand mark: a clean 4-pointed X/star (one shape, not
+  // two overlapping chevrons — that produced an odd 5-lobed blob)
   function buildXGeometry() {
     var outerR = 0.62, innerR = 0.16;
     var shape = new THREE.Shape();
     for (var i = 0; i < 8; i++) {
-      // outer points sit on the diagonals (45/135/225/315°) so the star
-      // reads as an X rather than a plus
+      // outer points on the diagonals (45/135/225/315°) so it reads as X, not +
       var angle = Math.PI / 4 + (i * Math.PI) / 4;
       var r = i % 2 === 0 ? outerR : innerR;
       var x = Math.cos(angle) * r, y = Math.sin(angle) * r;
@@ -165,12 +134,6 @@
     return new THREE.LineSegments(geo, material);
   }
 
-  /* =========================================================
-     APPLY / ANIMATE — the imperative shell. Everything reused
-     across frames is allocated once, up here, never inside the
-     render loop (kept the frame budget steady).
-     ========================================================= */
-
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: "high-performance" });
   renderer.setClearColor(0x0b0f16, 1);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -202,9 +165,8 @@
   var edgesObject = buildEdgesObject(edgeList);
   scene.add(edgesObject);
 
-  // populate edge endpoints once from the resting layout so the graph
-  // still reads correctly even if the animation loop below never runs
-  // a second frame (prefers-reduced-motion)
+  // populate edges once from resting layout — must still look right if
+  // reduced-motion means the loop below never runs a second frame
   (function initEdgePositions() {
     var posAttr = edgesObject.geometry.attributes.position;
     var arr = posAttr.array;
@@ -218,10 +180,7 @@
     posAttr.needsUpdate = true;
   })();
 
-  // scratch buffers — allocated once, mutated every frame, never replaced.
-  // this is what "hoist new Vector3() out of the render loop" means in
-  // practice: these five objects are the ONLY Vector3 instances the
-  // animation loop ever touches, no matter how many nodes there are.
+  // scratch buffers — allocated once, reused every frame, never replaced
   var scratchNode = new THREE.Vector3();
   var scratchForward = new THREE.Vector3();
   var scratchRight = new THREE.Vector3();
@@ -245,11 +204,7 @@
   window.addEventListener("resize", resize);
   resize();
 
-  /* ---------- GSAP ScrollTrigger camera choreography ----------
-     One continuous ~190° orbit around the node graph, composed of
-     five shots — one per section — instead of the section content
-     itself sliding around. Each tween's start matches the previous
-     tween's end so the camera move reads as one continuous flight. */
+  // ~190° camera orbit around the graph, chained shot-to-shot by section
   try {
     if (!reduceMotion && window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
@@ -270,10 +225,7 @@
           {
             theta: to.theta, radius: to.radius, y: to.y,
             ease: "none",
-            immediateRender: false, // fromTo() renders its "from" state at creation
-                                     // time by default — with 4 tweens sharing one
-                                     // object, whichever is built last would stomp
-                                     // cameraState before any scrolling even happens
+            immediateRender: false, // else the last of 4 tweens sharing cameraState wins at creation time
             scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: 0.6 }
           }
         );
@@ -297,10 +249,7 @@
     camera.lookAt(0, cameraState.lookY, 0);
 
     if (!reduceMotion) {
-      // camera-relative "right" axis computed ONCE per frame (not per node)
-      // into the pre-allocated scratch vectors — screen-space repulsion
-      // reads correctly from whatever angle the orbit is currently at,
-      // without allocating anything inside the per-node loop below
+      // camera-relative "right" axis, once per frame — repulsion stays correct at any orbit angle
       camera.getWorldDirection(scratchForward);
       scratchRight.crossVectors(scratchForward, camera.up).normalize();
 
