@@ -74,25 +74,31 @@
         <div class="pillars-head" data-reveal="clip">
           <p class="kicker">Направления</p>
           <h2>Одна команда, три уровня контроля</h2>
+          <p class="swipe-hint" aria-hidden="true">Смахните карточки</p>
         </div>
 
-        <article class="pillar-card card-a" data-reveal="up">
-          <span class="pillar-tag">IT</span>
-          <h3>Инфраструктура, которая не звонит вам ночью</h3>
-          <p>Проектирование и обслуживание серверной и сетевой инфраструктуры, облачные решения, автоматизация бизнес-процессов. Круглосуточная инженерная поддержка и отказоустойчивость 99,9% — на уровне договора, а не презентации.</p>
-        </article>
+        <!-- .pillars-cards is display:contents on desktop (the three cards
+             stay plain grid items, nothing changes there) and becomes a
+             swipeable snap-scroll carousel only below 760px -->
+        <div class="pillars-cards">
+          <article class="pillar-card card-a" data-reveal="up">
+            <span class="pillar-tag">IT</span>
+            <h3>Инфраструктура, которая не звонит вам ночью</h3>
+            <p>Проектирование и обслуживание серверной и сетевой инфраструктуры, облачные решения, автоматизация бизнес-процессов. Круглосуточная инженерная поддержка и отказоустойчивость 99,9% — на уровне договора, а не презентации.</p>
+          </article>
 
-        <article class="pillar-card card-b" data-reveal="up" data-reveal-delay="1">
-          <span class="pillar-tag">ИБ</span>
-          <h3>Периметр, проверенный на разрыв</h3>
-          <p>Аудит защищённости, реагирование на инциденты, внедрение SIEM и DLP, защита рабочих мест и сетевого контура. Ищем точки входа для атаки раньше, чем это сделает кто-то другой.</p>
-        </article>
+          <article class="pillar-card card-b" data-reveal="up" data-reveal-delay="1">
+            <span class="pillar-tag">ИБ</span>
+            <h3>Периметр, проверенный на разрыв</h3>
+            <p>Аудит защищённости, реагирование на инциденты, внедрение SIEM и DLP, защита рабочих мест и сетевого контура. Ищем точки входа для атаки раньше, чем это сделает кто-то другой.</p>
+          </article>
 
-        <article class="pillar-card card-c" data-reveal="up" data-reveal-delay="2">
-          <span class="pillar-tag">PR / GR</span>
-          <h3>Голос компании в момент, когда он важнее всего</h3>
-          <p>PR, GR и организация мероприятий для площадок, где решения принимаются лично — для тех же аудиторий, для которых мы строим инфраструктуру и защиту: регуляторов, партнёров, прессы.</p>
-        </article>
+          <article class="pillar-card card-c" data-reveal="up" data-reveal-delay="2">
+            <span class="pillar-tag">PR / GR</span>
+            <h3>Голос компании в момент, когда он важнее всего</h3>
+            <p>PR, GR и организация мероприятий для площадок, где решения принимаются лично — для тех же аудиторий, для которых мы строим инфраструктуру и защиту: регуляторов, партнёров, прессы.</p>
+          </article>
+        </div>
       </div>
     </section>
 

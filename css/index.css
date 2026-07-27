@@ -75,6 +75,7 @@ body.loaded .reveal-line{ opacity:1; transform: translateY(0); }
    scroll is exactly what read as "cheap" here. ---------- */
 .pillars{ padding-block: clamp(4rem, 9vw, 7rem); background: var(--mist); }
 .pillars-head{ grid-column: 1 / -1; margin-bottom: clamp(2rem, 5vw, 3rem); max-width:640px; }
+.pillars-cards{ display: contents; } /* transparent wrapper on desktop — see the phone-only carousel below */
 .pillar-card{
   grid-column: span 4;
   background: var(--glass-bg);
@@ -96,6 +97,40 @@ body.loaded .reveal-line{ opacity:1; transform: translateY(0); }
   .card-b{ margin-top:0; }
 }
 
+.swipe-hint{ display:none; }
+
+/* ---------- phone only: pillars becomes a swipeable snap carousel instead
+   of a plain stack — the one thing on this page that's actually fun to
+   scroll with a thumb, not just a shrunk desktop layout. ---------- */
+@media (max-width: 760px){
+  .pillars-cards{
+    grid-column: 1 / -1; /* was defaulting to a single 1/12 auto-placed cell once it stopped being display:contents */
+    display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none; margin-top:1.5rem;
+    padding-bottom:.25rem;
+  }
+  .pillars-cards::-webkit-scrollbar{ display:none; }
+  .pillars-cards .pillar-card{
+    flex:0 0 82vw; scroll-snap-align:center; scroll-snap-stop:always;
+  }
+  .card-b{ margin-top:0; }
+
+  .swipe-hint{
+    display:flex; align-items:center; gap:.4rem;
+    font-family: var(--font-mono); font-size:.72rem; letter-spacing:.06em;
+    color: var(--gray); margin-top:.75rem;
+  }
+  .swipe-hint::before, .swipe-hint::after{ content:"›"; color: var(--blue); animation: swipe-nudge 1.6s ease-in-out infinite; }
+  .swipe-hint::before{ content:"‹"; animation-delay:.15s; }
+}
+@keyframes swipe-nudge{
+  0%, 100%{ transform:translateX(0); opacity:.5; }
+  50%{ transform:translateX(3px); opacity:1; }
+}
+@media (max-width:760px) and (prefers-reduced-motion: reduce){
+  .swipe-hint::before, .swipe-hint::after{ animation:none; }
+}
+
 /* ---------- stats: quick, native-speed section by design — the 3D
    background shows straight through since nothing here blurs it. ---------- */
 .stats{
@@ -109,6 +144,18 @@ body.loaded .reveal-line{ opacity:1; transform: translateY(0); }
   font-size: clamp(2.1rem, 4.8vw, 3.35rem); font-variant-numeric: tabular-nums;
 }
 .stat-label{ font-family: var(--font-mono); font-size:.72rem; color: var(--gray); line-height:1.5; max-width:22ch; }
+
+/* phone only: numbers pop in with a little overshoot instead of just fading up */
+@media (max-width: 760px){
+  .stat[data-reveal]{
+    transition: opacity .6s ease, transform .65s cubic-bezier(.34, 1.56, .64, 1);
+    transform: translateY(22px) scale(.8);
+  }
+  .stat[data-reveal].is-visible{ transform: translateY(0) scale(1); }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce){
+  .stat[data-reveal]{ transform:none; }
+}
 
 /* ---------- contact: pinned "closing perimeter" — the two panels start
    apart and js/main.js converges them as you scroll through. ---------- */
@@ -125,7 +172,23 @@ body.loaded .reveal-line{ opacity:1; transform: translateY(0); }
 /* transform is scroll-scrubbed by JS every frame — it must not inherit the
    generic [data-reveal] transition or the motion will lag behind the scrollbar */
 .contact-lead, .contact-data{ transition: opacity .8s ease; }
+
+/* phone only: the pin-converge above needs a tall scroll-jacked wrapper,
+   which is exactly the kind of trick that gets janky on mobile viewports
+   (address-bar resize mid-scroll) — so this is disabled per base.css, and
+   these panels get their own snappier, non-scrubbed entrance instead: a
+   bouncy tilt-in on arrival rather than a flat opacity fade. */
 @media (max-width: 760px){
+  .contact-lead, .contact-data{
+    transition: opacity .7s ease, transform .8s cubic-bezier(.34, 1.56, .64, 1) !important;
+  }
+  .contact-lead[data-reveal]{ transform: translateX(-32px) rotate(-3deg) scale(.94) !important; }
+  .contact-data[data-reveal]{ transform: translateX(32px) rotate(3deg) scale(.94) !important; }
+  .contact-lead[data-reveal].is-visible, .contact-data[data-reveal].is-visible{
+    transform: translateX(0) rotate(0) scale(1) !important;
+  }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce){
   .contact-lead, .contact-data{ transform:none !important; }
 }
 dl{ margin:0; display:flex; flex-direction:column; gap:1.1rem; font-family: var(--font-mono); font-size:.88rem; }
